@@ -11,7 +11,7 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
   <PropertyGroup>
-    <DownloadFFmpeg>true</DownloadFFmpeg>
+    <DownloadFFmpeg>false</DownloadFFmpeg>
     <PublishMacOSBundle>false</PublishMacOSBundle>
   </PropertyGroup>
   <ItemGroup>
