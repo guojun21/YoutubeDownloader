@@ -18,3 +18,8 @@ dist/
 build/
 .DS_Store
 *.log
+*.log
+__pycache__/
+*.pyc
+.env
+.vscode/
