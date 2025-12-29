@@ -1,11 +1,19 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { spawn, ChildProcess } from 'child_process';
 import path from 'path';
+import os from 'os';
 
 let mainWindow: BrowserWindow | null = null;
 let backendProcess: ChildProcess | null = null;
 
 const BACKEND_PORT = 5123;
+
+function getDotnetPath(): string {
+  // Prefer a user-local installation to avoid requiring admin rights.
+  // dotnet-install.sh defaults to ~/.dotnet/dotnet on macOS/Linux.
+  const userDotnet = path.join(os.homedir(), '.dotnet', 'dotnet');
+  return userDotnet;
+}
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -37,8 +45,12 @@ function createWindow() {
 function startBackend() {
   const backendPath = path.join(__dirname, '../../YoutubeDownloader.Api');
   
-  backendProcess = spawn('dotnet', ['run', '--project', backendPath], {
-    env: { ...process.env, ASPNETCORE_URLS: `http://localhost:${BACKEND_PORT}` },
+  const dotnet = getDotnetPath();
+  backendProcess = spawn(dotnet, ['run', '--project', backendPath], {
+    env: {
+      ...process.env,
+      ASPNETCORE_URLS: `http://localhost:${BACKEND_PORT}`,
+    },
   });
 
   backendProcess.stdout?.on('data', (data) => {
